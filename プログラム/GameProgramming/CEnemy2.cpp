@@ -50,7 +50,7 @@ CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector
 	CTaskManager::Get()->Remove(this); //削除して
 	CTaskManager::Get()->Add(this); //追加する
 	//目標地点の設定
-	mPoint = mPosition + CVector(0.0f, 0.0f, 100.0f) * mMatrixRotate;
+	mPoint = mPosition + CVector(0.0f, 0.0f, 200.0f) * mMatrixRotate;
 }
 
 //更新処理
@@ -101,15 +101,14 @@ void CEnemy2::Update() {
 				//Y軸のズレが2.0以下
 				if (-2.0f < dy && dy < 2.0f)
 				{
-					if (dz > 0.0f)
-					{
-						mFireCount = FIRECOUNT;
-						//弾を発射します
-						CBullet *bullet = new CBullet();
-						bullet->Set(0.1f, 1.5f);
-						bullet->mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
-						bullet->mRotation = mRotation;
-						bullet->Update();
+					if (dz < 10.0f && dz > -10.0f) {
+							mFireCount = FIRECOUNT;
+							//弾を発射します
+							CBullet* bullet = new CBullet();
+							bullet->Set(0.1f, 1.5f);
+							bullet->mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
+							bullet->mRotation = mRotation;
+							bullet->Update();
 					}
 				}
 			}

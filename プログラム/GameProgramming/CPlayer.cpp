@@ -32,29 +32,46 @@ CPlayer::CPlayer()
 
 //更新処理
 void CPlayer::Update() {
-	//Aキー入力で回転
-	if (CKey::Push('A')) {
+	//左矢印キー入力で回転
+	if (CKey::Push(VK_LEFT)){
 		//Y軸の回転値を増加
 		mRotation.mY += 1;
 	}
-	if (CKey::Push('D')) {
+	//右矢印キーで回転
+	if (CKey::Push(VK_RIGHT)) {
 		//Y軸の回転値を増加
 		mRotation.mY -= 1;
 	}
-	//上矢印キー入力で前進
-	if (CKey::Push(VK_UP)) {
+	//Wキー入力で前進
+	if (CKey::Push('W')) {
 		//Z軸方向に1進んだ値を回転移動させる
 		mPosition = CVector(0.0f, 0.0f, 1.0f) * mMatrix;
 	}
 	//Sキー入力で上向き
-	if (CKey::Push('S')) {
+	if (CKey::Push(VK_UP)) {
 		//X軸の回転値を減算
 		mRotation.mX -= 1;
 	}
-	//Wキー入力で上向き
-	if (CKey::Push('W')) {
+	//下矢印キー入力で上向き
+	if (CKey::Push(VK_DOWN)) {
 		//X軸の回転値を加算
 		mRotation.mX += 1;
+	}
+
+	if (CKey::Push('D')) {
+		//X軸方向に1進んだ値を回転移動させる
+		mPosition = CVector(1.0f, 0.0f, 0.0f) * mMatrix;
+	}
+
+	//Aキー入力で回転
+	if (CKey::Push('A')) {
+		//X軸方向に1進んだ値を回転移動させる
+		mPosition = CVector(-1.0f, 0.0f, 0.0f) * mMatrix;
+	}
+	//Sキー入力で上向き
+	if (CKey::Push('S')) {
+		//Z軸方向に1進んだ値を回転移動させる
+		mPosition = CVector(0.0f, 0.0f, -1.0f) * mMatrix;
 	}
 
 	if (mFireCount > 0)
@@ -73,6 +90,10 @@ void CPlayer::Update() {
 //		TaskManager.Add(bullet);
 	}
 
+	if (CKey::Push('G')) {
+		//軸方向に移動させる
+		mPosition = CVector(0.0f, 1.0f, 0.0f) * mMatrix;
+	}
 	//CTransformの更新
 	CTransform::Update();
 }
