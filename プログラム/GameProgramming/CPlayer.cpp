@@ -13,6 +13,10 @@
 //
 #include "CEffect.h"
 
+#include"CFriendly.h"
+CModel mModelC;
+#define OBJ "f16.obj"
+#define MTL "f16.mtl"
 CPlayer *CPlayer::spThis = 0;
 
 #define FIRECOUNT 15	//発射間隔
@@ -45,7 +49,7 @@ void CPlayer::Update() {
 	//Wキー入力で前進
 	if (CKey::Push('W')) {
 		//Z軸方向に1進んだ値を回転移動させる
-		mPosition = CVector(0.0f, 0.0f, 1.0f) * mMatrix;
+		mPosition = CVector(0.0f, 0.0f, 2.0f) * mMatrix;
 	}
 	//Sキー入力で上向き
 	if (CKey::Push(VK_UP)) {
@@ -60,13 +64,13 @@ void CPlayer::Update() {
 
 	if (CKey::Push('D')) {
 		//X軸方向に1進んだ値を回転移動させる
-		mPosition = CVector(1.0f, 0.0f, 0.0f) * mMatrix;
+		mPosition = CVector(-1.5f, 0.0f, 0.0f) * mMatrix;
 	}
 
 	//Aキー入力で回転
 	if (CKey::Push('A')) {
 		//X軸方向に1進んだ値を回転移動させる
-		mPosition = CVector(-1.0f, 0.0f, 0.0f) * mMatrix;
+		mPosition = CVector(1.5f, 0.0f, 0.0f) * mMatrix;
 	}
 	//Sキー入力で上向き
 	if (CKey::Push('S')) {
@@ -94,6 +98,13 @@ void CPlayer::Update() {
 		//軸方向に移動させる
 		mPosition = CVector(0.0f, 1.0f, 0.0f) * mMatrix;
 	}
+
+	if (CKey::Push('Z')) {
+		mModelC.Load(OBJ, MTL);
+		new CFriendly(CVector(0.0f, 0.0f, 30.0f) * mMatrix, CVector(), CVector(0.1f, 0.0f, 0.1f));
+	}
+
+
 	//CTransformの更新
 	CTransform::Update();
 }

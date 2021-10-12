@@ -123,11 +123,11 @@ void CEnemy2::Update() {
 	//¶‰E•ûŒü‚Ö‰ñ“]
 	if (dx > margin)
 	{
-		mRotation.mY += 1.0f;
+		mRotation.mY += 2.0f;
 	}
 	else if (dx < -margin)
 	{
-		mRotation.mY -= 1.0f;
+		mRotation.mY -= 2.0f;
 	}
 	//ã‰º•ûŒü‚Ö‰ñ“]
 	if (dy > margin)
