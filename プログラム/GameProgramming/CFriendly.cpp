@@ -1,4 +1,4 @@
-#include "CEnemy2.h"
+#include "CFriendly.h"
 #include "CEffect.h"
 #include "CTaskManager.h"
 #include "CCollisionManager.h"
@@ -7,22 +7,22 @@
 #define OBJ "f16.obj"	//モデルのファイル
 #define MTL "f16.mtl"	//モデルのマテリアルファイル
 
-#define HP 20	//耐久値
+#define HP 3	//耐久値
 #define VELOCITY 0.11f	//速度
 
-CModel CEnemy2::mModel;	//モデルデータ作成
+CModel CFriendly::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 15	//発射間隔
+#define FIRECOUNT 5	//発射間隔
 
 
-CEnemy2::CEnemy2()
-: mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4f)
-, mColSearch(this, &mMatrix, CVector(0.0f, 0.0f, 100.0f), 30.0f)
-, mpPlayer(0)
-, mHp(HP)
-, mFireCount(0)
+CFriendly::CFriendly()
+	: mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4f)
+	, mColSearch(this, &mMatrix, CVector(0.0f, 0.0f, 100.0f), 30.0f)
+	, mpEnemy(0)
+	, mHp(HP)
+	, mFireCount(0)
 {
-	mTag = EENEMY;
+	mTag = EFRIENDLY;
 	mColSearch.mTag = CCollider::ESEARCH;	//タグ設定
 
 	//モデルが無いときは読み込む
@@ -37,8 +37,8 @@ CEnemy2::CEnemy2()
 
 //コンストラクタ
 //CEnemy(位置, 回転, 拡縮)
-CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector& scale)
-	: CEnemy2()
+CFriendly::CFriendly(const CVector& position, const CVector& rotation, const CVector& scale)
+	: CFriendly()
 {
 	//位置、回転、拡縮を設定する
 	mPosition = position;	//位置の設定
@@ -54,7 +54,7 @@ CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector
 }
 
 //更新処理
-void CEnemy2::Update() {
+void CFriendly::Update() {
 
 	//HPが0以下の時　撃破
 	if (mHp <= 0)
@@ -80,28 +80,42 @@ void CEnemy2::Update() {
 	//前方向（Z軸）のベクトルを求める
 	CVector vz = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
 
-	if (mFireCount > 0)
-	{
-		mFireCount--;
-	}
-	else
-	{
+
 		//プレイヤーのポインタが0以外の時
-		if (mpPlayer)
+		if (mpEnemy)
 		{
 			//プレイヤーまでのベクトルを求める
-			CVector vp = mpPlayer->mPosition - mPosition;
+			CVector vp = mpEnemy->mPosition - mPosition;
 			float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
 			float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
 			float dz = vp.Dot(vz);
-
+			if (dx > 0.0f)
+			{
+				mRotation.mY++;
+			}
+			else {
+				mRotation.mY--;
+			}
+			if (dy > 0.0f)
+			{
+				mRotation.mX--;
+			}
+			else {
+				mRotation.mX++;
+			}
 			//X軸のズレが2.0以下
 			if (-2.0f < dx && dx < 2.0f)
 			{
 				//Y軸のズレが2.0以下
 				if (-2.0f < dy && dy < 2.0f)
 				{
-					if (dz < 10.0f && dz > -10.0f) {
+					if (dz > 0.0f) {
+						if (mFireCount > 0)
+						{
+							mFireCount--;
+						}
+						else
+						{
 							mFireCount = FIRECOUNT;
 							//弾を発射します
 							CBullet* bullet = new CBullet();
@@ -109,12 +123,13 @@ void CEnemy2::Update() {
 							bullet->mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
 							bullet->mRotation = mRotation;
 							bullet->Update();
+						}
 					}
 				}
 			}
 		}
-	}
-
+	
+	/*
 	//目標地点までのベクトルを求める
 	CVector vp = mPoint - mPosition;
 	float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
@@ -140,31 +155,32 @@ void CEnemy2::Update() {
 	}
 
 	//移動する
-	mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
+	//mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 
-	CTransform::Update();	//行列更新
 
+	
 	//およそ3秒毎に目標地点を更新
 	int r = rand() % 180;	//rand()は整数の乱数を返す
 							//% 180 は180で割った余りを求める
 	if (r == 0)
 	{
-		if (mpPlayer)
+		if (mpEnemy)
 		{
-			mPoint = mpPlayer->mPosition;
+			mPoint = mpEnemy->mPosition;
 		}
 		else
 		{
 			mPoint = mPoint * CMatrix().RotateY(45);
 		}
 	}
-
-	mpPlayer = 0;
+	*/
+	CTransform::Update();	//行列更新
+	//mpEnemy = 0;
 
 }
 //衝突処理
 //Collision(コライダ1, コライダ2)
-void CEnemy2::Collision(CCollider *m, CCollider *o) {
+void CFriendly::Collision(CCollider* m, CCollider* o) {
 	//相手がサーチの時は戻る
 	if (o->mTag == CCollider::ESEARCH)
 	{
@@ -177,13 +193,13 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 		if (o->mType == CCollider::ESPHERE)
 		{
 			//相手がプレイヤーの時
-			if (o->mpParent->mTag == EPLAYER)
+			if (o->mpParent->mTag == EENEMY)
 			{
 				//衝突している時
 				if (CCollider::Collision(m, o))
 				{
 					//プレイヤーのポインタ設定
-					mpPlayer = o->mpParent;
+					mpEnemy = o->mpParent;
 				}
 			}
 		}
@@ -211,6 +227,7 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 		if (CCollider::CollisionTriangleSphere(o, m, &adjust))
 		{	//衝突しない位置まで戻す
 			mPosition = mPosition + adjust;
+			
 		}
 		break;
 	}
@@ -222,13 +239,13 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 	case CCollider::ESEARCH:
 		if (o->mType == CCollider::ESPHERE)
 		{
-			if (o->mpParent->mTag == EPLAYER)
+			if (o->mpParent->mTag == EENEMY)
 			{
 				//コライダのmとyが衝突しているか判定
 				if (CCollider::Collision(m, o))
 				{
 					//プレイヤーのポインタを設定
-					mpPlayer = o->mpParent;
+					mpEnemy = o->mpParent;
 				}
 			}
 		}
@@ -271,10 +288,10 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 			switch (m->mTag)
 			{
 			case CCollider::ESEARCH:
-				if (o->mpParent->mTag == EPLAYER)
+				if (o->mpParent->mTag == EENEMY)
 				{
 					//プレイヤーのポインタを設定
-					mpPlayer = o->mpParent;
+					mpEnemy = o->mpParent;
 				}
 				break;
 			default:
@@ -297,12 +314,12 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 	}
 }
 
-void CEnemy2::TaskCollision()
+void CFriendly::TaskCollision()
 {
 	mCollider.ChangePriority();
 	mColSearch.ChangePriority();
-//	mCollider3.ChangePriority();
+	//	mCollider3.ChangePriority();
 	CCollisionManager::Get()->Collision(&mCollider, COLLISIONRANGE);
 	CCollisionManager::Get()->Collision(&mColSearch, COLLISIONRANGE);
-//	CCollisionManager::Get()->Collision(&mCollider3, COLLISIONRANGE);
+	//	CCollisionManager::Get()->Collision(&mCollider3, COLLISIONRANGE);
 }

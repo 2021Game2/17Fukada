@@ -35,6 +35,7 @@ void CSceneGame::Init() {
 	mEye = CVector(1.0f, 2.0f, 3.0f);
 	//モデルファイルの入力
 	mModel.Load("f14.obj", "f14.mtl");
+	
 	mBackGround.Load("sky.obj", "sky.mtl");
 
 	CMatrix matrix;
