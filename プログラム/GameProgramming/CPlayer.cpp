@@ -17,6 +17,7 @@
 CModel mModelC;
 #define OBJ "f16.obj"
 #define MTL "f16.mtl"
+#define BULLET 30	//残弾
 CPlayer *CPlayer::spThis = 0;
 
 #define FIRECOUNT 15	//発射間隔
@@ -27,6 +28,7 @@ CPlayer::CPlayer()
 , mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
 , mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.5f)
 , mFireCount(0)
+, mZandan(BULLET)	//残弾
 {
 	mTag = EPLAYER;	//タグの設定
 	spThis = this;
@@ -84,13 +86,14 @@ void CPlayer::Update() {
 	}
 
 	//スペースキー入力で弾発射
-	if (CKey::Push(VK_SPACE) && mFireCount == 0) {
+	if (CKey::Push(VK_SPACE) && mFireCount == 0 &&mZandan > 0) {
 		mFireCount = FIRECOUNT;
 		CBullet *bullet = new CBullet();
 		bullet->Set(0.1f, 1.5f);
 		bullet->mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
 		bullet->mRotation = mRotation;
 		bullet->Update();
+		mZandan--;
 //		TaskManager.Add(bullet);
 	}
 
@@ -166,8 +169,12 @@ void CPlayer::Render()
 	//描画色の設定（緑色の半透明）
 	glColor4f(0.0f, 1.0f, 0.0f, 0.99f);
 	//文字列編集エリアの作成
-	char buf[64];
+	char buf[256];
 
+	sprintf(buf, "BULLET:%2.0f", mZandan);
+	//文字列の描画
+	mText.DrawString(buf, 100, 30, 8, 16);
+	/*
 	//Y座標の表示
 	//文字列の設定
 	sprintf(buf, "PY:%7.2f", mPosition.mY);
@@ -198,7 +205,7 @@ void CPlayer::Render()
 	sprintf(buf, "FY:%7.2f", (CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate).GetRotationY());
 	//文字列の描画
 	mText.DrawString(buf, 100, -120, 8, 16);
-
+	*/
 
 	//2Dの描画終了
 	CUtil::End2D();
