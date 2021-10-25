@@ -14,14 +14,15 @@ CModel CEnemy2::mModel;	//モデルデータ作成
 
 #define FIRECOUNT 15	//発射間隔
 
-
+int CEnemy2::sCount = 0;	//インスタンス数
 CEnemy2::CEnemy2()
 : mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4f)
-, mColSearch(this, &mMatrix, CVector(0.0f, 0.0f, 100.0f), 30.0f)
+, mColSearch(this, &mMatrix, CVector(0.0f, 0.0f, 200.0f), 30.0f)
 , mpPlayer(0)
 , mHp(HP)
 , mFireCount(0)
 {
+	
 	mTag = EENEMY;
 	mColSearch.mTag = CCollider::ESEARCH;	//タグ設定
 
@@ -32,6 +33,7 @@ CEnemy2::CEnemy2()
 	}
 	//モデルのポインタ設定
 	mpModel = &mModel;
+	
 }
 
 
@@ -40,6 +42,7 @@ CEnemy2::CEnemy2()
 CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector& scale)
 	: CEnemy2()
 {
+	sCount++;
 	//位置、回転、拡縮を設定する
 	mPosition = position;	//位置の設定
 	mRotation = rotation;	//回転の設定
@@ -50,7 +53,7 @@ CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector
 	CTaskManager::Get()->Remove(this); //削除して
 	CTaskManager::Get()->Add(this); //追加する
 	//目標地点の設定
-	mPoint = mPosition + CVector(0.0f, 0.0f, 200.0f) * mMatrixRotate;
+	mPoint = mPosition + CVector(0.0f, 0.0f, 700.0f) * mMatrixRotate;
 }
 
 //更新処理
@@ -119,46 +122,75 @@ void CEnemy2::Update() {
 	CVector vp = mPoint - mPosition;
 	float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
 	float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
+	float dz = vp.Dot(vz);
 	float margin = 0.1f;
-	//左右方向へ回転
-	if (dx > margin)
-	{
-		mRotation.mY += 2.0f;
+	if (dz < 100.0f && dz > -100.0f) {	//プレイヤーとの距離が100未満の時の追尾はきつく
+		//左右方向へ回転
+		if (dx > margin)
+		{
+			mRotation.mY += 4.0f;
+		}
+		else if (dx < -margin)
+		{
+			mRotation.mY -= 4.0f;
+		}
+		//上下方向へ回転
+		if (dy > margin)
+		{
+			mRotation.mX -= 2.0f;
+		}
+		else if (dy < -margin)
+		{
+			mRotation.mX += 2.0f;
+		}
+
+		//移動する
+		mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 	}
-	else if (dx < -margin)
-	{
-		mRotation.mY -= 2.0f;
-	}
-	//上下方向へ回転
-	if (dy > margin)
-	{
-		mRotation.mX -= 1.0f;
-	}
-	else if (dy < -margin)
-	{
-		mRotation.mX += 1.0f;
+	else{	//プレイヤーとの距離が100以上の時追尾は緩やかに
+		//左右方向へ回転
+		if (dx > margin)
+		{
+			mRotation.mY += 1.0f;
+		}
+		else if (dx < -margin)
+		{
+			mRotation.mY -= 1.0f;
+		}
+		//上下方向へ回転
+		if (dy > margin)
+		{
+			mRotation.mX -= 1.0f;
+		}
+		else if (dy < -margin)
+		{
+			mRotation.mX += 1.0f;
+		}
+
+		//移動する
+		mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 	}
 
-	//移動する
-	mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 
 	CTransform::Update();	//行列更新
 
-	//およそ3秒毎に目標地点を更新
-	int r = rand() % 180;	//rand()は整数の乱数を返す
-							//% 180 は180で割った余りを求める
-	if (r == 0)
-	{
-		if (mpPlayer)
+		//目標地点を更新
+		int r = rand() % 10;	//rand()は整数の乱数を返す
+						
+		if (r == 0)
 		{
-			mPoint = mpPlayer->mPosition;
+			if (mpPlayer)
+			{
+				mPoint = mpPlayer->mPosition;
+			}
+			else
+			{
+				mPoint = mPoint * CMatrix().RotateY(45);
+			}
 		}
-		else
-		{
-			mPoint = mPoint * CMatrix().RotateY(45);
-		}
-	}
+	
 
+	
 	mpPlayer = 0;
 
 }
@@ -198,6 +230,10 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 			//エフェクト生成
 			new CEffect(o->mpParent->mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
 			mHp--;	//ヒットポイントの減算
+			
+			if (mHp == 0) {
+				sCount--;	//ヒットポイントが0になるとクリアカウント減少
+			}
 		}
 		break;
 	case CCollider::ETRIANGLE:	//三角コライダの時
@@ -205,6 +241,7 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 		//撃破で地面に衝突すると無効
 		if (mHp <= 0)
 		{
+			
 			mEnabled = false;
 		}
 		//三角コライダと球コライダの衝突判定

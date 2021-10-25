@@ -30,6 +30,7 @@ CCollider::CCollider(CCharacter *parent, CMatrix *matrix,
 
 //描画
 void CCollider::Render() {
+	/*
 	glPushMatrix();
 	//コライダの中心座標を計算
 	//自分の座標×親の変換行列を掛ける
@@ -42,6 +43,7 @@ void CCollider::Render() {
 	//球描画
 	glutWireSphere(mRadius, 16, 16);
 	glPopMatrix();
+	*/
 }
 
 CCollider::~CCollider()

@@ -51,16 +51,23 @@ void CSceneGame::Init() {
 	mPlayer.mRotation = CVector(0.0f, 180.0f, 0.0f);
 
 	//敵機のインスタンス作成
-	new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	//new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -100.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	//new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -130.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 	//new CEnemy(&mModelC5, CVector(0.0f, 10.0f, -600.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
 	//new CEnemy(&mModelC5, CVector(30.0f, 10.0f, -630.0f), CVector(), CVector(0.1f, 0.1f, 0.1f));
 
 //	new CEnemy2(CVector(-15.0f, 15.0f, -90.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 //	new CEnemy2(CVector(15.0f, 15.0f, -150.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CEnemy2(CVector(-5.0f, 1.0f, -10.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy2(CVector(5.0f, 1.0f, -10.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(-10.0f, 1.0f, -40.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(10.0f, 1.0f, -40.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+
+	new CEnemy2(CVector(-35.0f, 1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(35.0f, 1.0f, 50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+
+	new CEnemy2(CVector(-15.0f, 1.0f, -40.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(15.0f, 1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+
 
 	//ビルボードの生成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
@@ -147,7 +154,7 @@ void CSceneGame::Update() {
 	//コライダの描画
 	CCollisionManager::Get()->Render();
 #endif
-	if (CEnemy::sCount == 0)
+	if (CEnemy2::sCount == 0)
 	{
 		//2Dの描画開始
 		CUtil::Start2D(-400, 400, -300, 300);
