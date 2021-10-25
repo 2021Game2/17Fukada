@@ -9,6 +9,7 @@
 
 #define HP 20	//耐久値
 #define VELOCITY 0.11f	//速度
+#define VELOCITY2 0.0f
 
 CModel CEnemy2::mModel;	//モデルデータ作成
 
@@ -104,7 +105,7 @@ void CEnemy2::Update() {
 				//Y軸のズレが2.0以下
 				if (-2.0f < dy && dy < 2.0f)
 				{
-					if (dz < 10.0f && dz > -10.0f) {
+					if (dz < 20.0f && dz > -20.0f) {
 							mFireCount = FIRECOUNT;
 							//弾を発射します
 							CBullet* bullet = new CBullet();
@@ -144,10 +145,17 @@ void CEnemy2::Update() {
 			mRotation.mX += 2.0f;
 		}
 
-		//移動する
-		mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
+		
+		if (dz < 5.0f && dz > -5.0f) {	//プレイヤーとの距離が5未満の時追尾は前進しない
+	   //移動する
+			mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY2) * mMatrixRotate;
+		}
+		else {	//プレイヤーとの距離が5以上の時は前進
+			//移動する
+			mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
+		}
 	}
-	else{	//プレイヤーとの距離が100以上の時追尾は緩やかに
+	 if(dz > 100.0f && dz < -100.0f){	//プレイヤーとの距離が100以上の時追尾は緩やかに
 		//左右方向へ回転
 		if (dx > margin)
 		{
@@ -171,6 +179,7 @@ void CEnemy2::Update() {
 		mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 	}
 
+	
 
 	CTransform::Update();	//行列更新
 

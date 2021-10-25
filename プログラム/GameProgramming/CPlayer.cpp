@@ -23,12 +23,13 @@ CPlayer *CPlayer::spThis = 0;
 #define FIRECOUNT 15	//”­ŽËŠÔŠu
 
 CPlayer::CPlayer()
-: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
-, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
-, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
-, mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.5f)
-, mFireCount(0)
-, mZandan(BULLET)	//Žc’e
+	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
+	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
+	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
+	, mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.5f)
+	, mFireCount(0)
+	, mZandan(BULLET)	//Žc’e
+	, mFly(0)
 {
 	mTag = EPLAYER;	//ƒ^ƒO‚ÌÝ’è
 	spThis = this;
@@ -38,6 +39,7 @@ CPlayer::CPlayer()
 
 //XVˆ—
 void CPlayer::Update() {
+	
 	//¶–îˆóƒL[“ü—Í‚Å‰ñ“]
 	if (CKey::Push(VK_LEFT)){
 		//YŽ²‚Ì‰ñ“]’l‚ð‘‰Á
@@ -99,7 +101,13 @@ void CPlayer::Update() {
 
 	if (CKey::Push('G')) {
 		//Ž²•ûŒü‚ÉˆÚ“®‚³‚¹‚é
-		mPosition = CVector(0.0f, 1.0f, 0.0f) * mMatrix;
+		mPosition = CVector(0.0f, 2.0f, 0.0f) *mMatrix ;
+		mFly = mFly + 2;
+	}
+	else if (mFly > 0)
+	{
+		mPosition = CVector(0.0f, -1.0f, 0.0f) * mMatrix ;
+		mFly--;
 	}
 
 	if (CKey::Push('Z')) {

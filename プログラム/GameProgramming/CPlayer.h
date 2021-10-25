@@ -33,7 +33,7 @@ public:
 	void TaskCollision();
 	//•`‰æˆ—
 	void Render();
-
+	int mFly;
 };
 
 #endif
