@@ -59,11 +59,11 @@ void CSceneGame::Init() {
 //	new CEnemy2(CVector(-15.0f, 15.0f, -90.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 //	new CEnemy2(CVector(15.0f, 15.0f, -150.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CEnemy2(CVector(-10.0f, 1.0f, -40.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy2(CVector(10.0f, 1.0f, -40.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(-10.0f, 1.0f, -80.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(10.0f, 1.0f, -80.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
 	new CEnemy2(CVector(-35.0f, 1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy2(CVector(35.0f, 1.0f, 50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(35.0f, 1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
 	new CEnemy2(CVector(-15.0f, 1.0f, -40.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy2(CVector(15.0f, 1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
@@ -129,7 +129,7 @@ void CSceneGame::Update() {
 	}
 	*/
 	//	e = CVector(-2.0f, 10.0f, -30.0f) * mPlayer.mMatrix;
-	e = CVector(-2.0f, 10.0f, -30.0f) * CMatrix().RotateY(Camera.mRotation.mY) * mPlayer.mMatrix;
+	e = CVector(-2.0f, 50.0f, -130.0f) * CMatrix().RotateY(Camera.mRotation.mY) * mPlayer.mMatrix;
 	//íçéãì_ÇãÅÇﬂÇÈ
 	c = mPlayer.mPosition;
 	//è„ï˚å¸ÇãÅÇﬂÇÈ

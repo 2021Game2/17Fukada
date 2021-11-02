@@ -10,6 +10,7 @@
 #define HP 20	//耐久値
 #define VELOCITY 0.11f	//速度
 #define VELOCITY2 0.0f
+#define VELOCITY3 0.06f
 
 CModel CEnemy2::mModel;	//モデルデータ作成
 
@@ -18,7 +19,7 @@ CModel CEnemy2::mModel;	//モデルデータ作成
 int CEnemy2::sCount = 0;	//インスタンス数
 CEnemy2::CEnemy2()
 : mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.4f)
-, mColSearch(this, &mMatrix, CVector(0.0f, 0.0f, 200.0f), 30.0f)
+, mColSearch(this, &mMatrix, CVector(0.0f, 0.0f, 300.0f), 30.0f)
 , mpPlayer(0)
 , mHp(HP)
 , mFireCount(0)
@@ -146,7 +147,7 @@ void CEnemy2::Update() {
 		}
 
 		
-		if (dz < 5.0f && dz > -5.0f) {	//プレイヤーとの距離が5未満の時追尾は前進しない
+		if (dz < 10.0f && dz > -10.0f) {	//プレイヤーとの距離が5未満の時追尾は前進しない
 	   //移動する
 			mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY2) * mMatrixRotate;
 		}
@@ -155,7 +156,7 @@ void CEnemy2::Update() {
 			mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 		}
 	}
-	 if(dz > 100.0f && dz < -100.0f){	//プレイヤーとの距離が100以上の時追尾は緩やかに
+	else  {	//プレイヤーとの距離が100以上の時追尾は緩やかに
 		//左右方向へ回転
 		if (dx > margin)
 		{

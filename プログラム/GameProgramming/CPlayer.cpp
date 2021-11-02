@@ -99,6 +99,11 @@ void CPlayer::Update() {
 //		TaskManager.Add(bullet);
 	}
 
+	if (CKey::Push('R')) {
+		mFireCount = 300;
+		mZandan = 30;
+	}
+
 	if (CKey::Push('G')) {
 		//Ž²•ûŒü‚ÉˆÚ“®‚³‚¹‚é
 		mPosition = CVector(0.0f, 2.0f, 0.0f) *mMatrix ;
@@ -111,8 +116,8 @@ void CPlayer::Update() {
 	}
 
 	if (CKey::Push('Z')) {
-		mModelC.Load(OBJ, MTL);
-		new CFriendly(CVector(0.0f, 0.0f, 30.0f) * mMatrix, CVector(), CVector(0.1f, 0.0f, 0.1f));
+		//mModelC.Load(OBJ, MTL);
+		new CFriendly(CVector(0.0f, 0.0f, 30.0f) * mMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 	}
 
 
