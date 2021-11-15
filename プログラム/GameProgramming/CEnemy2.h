@@ -17,6 +17,7 @@ public:
 	int mHp;	//ヒットポイント
 
 	CCharacter *mpPlayer;	//プレイヤーのポインタ
+	CCharacter* mpEnemy;	//エネミーのポインタ
 
 	//モデルデータ
 	static CModel mModel;

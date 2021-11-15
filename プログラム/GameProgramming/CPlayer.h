@@ -34,6 +34,8 @@ public:
 	//•`‰æˆ—
 	void Render();
 	int mFly;
+	static float mHp;
+	static float mStart;
 };
 
 #endif

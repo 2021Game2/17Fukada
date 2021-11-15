@@ -154,6 +154,7 @@ void CSceneGame::Update() {
 	//コライダの描画
 	CCollisionManager::Get()->Render();
 #endif
+	//敵全滅でクリア
 	if (CEnemy2::sCount == 0)
 	{
 		//2Dの描画開始
@@ -165,6 +166,30 @@ void CSceneGame::Update() {
 		mText.DrawString("MISSION CLEAR", -200, 100, 16, 32);
 
 		//2Dの描画終了
+		CUtil::End2D();
+	}
+	//プレイヤーのHP0でゲームオーバー
+	if (CPlayer::mHp == 0)
+	{
+		//2Dの描画開始
+		CUtil::Start2D(-400, 400, -300, 300);
+		//描画色の設定（緑色の半透明）
+		glColor4f(239.0f / 256.0f, 175.0f / 256.0f, 0.0f, 1.0f);
+
+		//文字列の描画
+		mText.DrawString("GAME OVER", -200, 100, 16, 32);
+		CUtil::End2D();
+	}
+	//Hキー入力でスタート
+	if (CPlayer::mStart == 0)
+	{
+		//2Dの描画開始
+		CUtil::Start2D(-400, 400, -300, 300);
+		//描画色の設定（緑色の半透明）
+		glColor4f(239.0f / 256.0f, 175.0f / 256.0f, 0.0f, 1.0f);
+
+		//文字列の描画
+		mText.DrawString("H KEY PUSH START ", -200,250, 16, 16);
 		CUtil::End2D();
 	}
 

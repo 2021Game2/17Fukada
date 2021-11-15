@@ -55,33 +55,34 @@ CFriendly::CFriendly(const CVector& position, const CVector& rotation, const CVe
 
 //更新処理
 void CFriendly::Update() {
-
-	//HPが0以下の時　撃破
-	if (mHp <= 0)
+	if (CPlayer::mStart > 0)
 	{
-		mHp--;
-		//15フレーム毎にエフェクト
-		if (mHp % 15 == 0)
+		//HPが0以下の時　撃破
+		if (mHp <= 0)
 		{
-			//エフェクト生成
-			new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			mHp--;
+			//15フレーム毎にエフェクト
+			if (mHp % 15 == 0)
+			{
+				//エフェクト生成
+				new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			}
+			//下降させる
+			mPosition.mY -= 0.03f;
+			CTransform::Update();	//行列更新
+			return;	//呼び元へ戻す
 		}
-		//下降させる
-		mPosition.mY -= 0.03f;
-		CTransform::Update();	//行列更新
-		return;	//呼び元へ戻す
-	}
 
 
-	//左向き（X軸）のベクトルを求める
-	CVector vx = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
-	//上向き（Y軸）のベクトルを求める
-	CVector vy = CVector(0.0f, 1.0f, 0.0f) * mMatrixRotate;
-	//前方向（Z軸）のベクトルを求める
-	CVector vz = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+		//左向き（X軸）のベクトルを求める
+		CVector vx = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+		//上向き（Y軸）のベクトルを求める
+		CVector vy = CVector(0.0f, 1.0f, 0.0f) * mMatrixRotate;
+		//前方向（Z軸）のベクトルを求める
+		CVector vz = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
 
 
-		//プレイヤーのポインタが0以外の時
+		//エネミーのポインタが0以外の時
 		if (mpEnemy)
 		{
 			//プレイヤーまでのベクトルを求める
@@ -128,55 +129,59 @@ void CFriendly::Update() {
 				}
 			}
 		}
-	
-	/*
-	//目標地点までのベクトルを求める
-	CVector vp = mPoint - mPosition;
-	float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
-	float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
-	float margin = 0.1f;
-	//左右方向へ回転
-	if (dx > margin)
-	{
-		mRotation.mY += 2.0f;
-	}
-	else if (dx < -margin)
-	{
-		mRotation.mY -= 2.0f;
-	}
-	//上下方向へ回転
-	if (dy > margin)
-	{
-		mRotation.mX -= 1.0f;
-	}
-	else if (dy < -margin)
-	{
-		mRotation.mX += 1.0f;
-	}
-
-	//移動する
-	//mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
-
-
-	
-	//およそ3秒毎に目標地点を更新
-	int r = rand() % 180;	//rand()は整数の乱数を返す
-							//% 180 は180で割った余りを求める
-	if (r == 0)
-	{
-		if (mpEnemy)
+		if (CPlayer::mHp <= 0)
 		{
-			mPoint = mpEnemy->mPosition;
+			mEnabled = false;
 		}
-		else
-		{
-			mPoint = mPoint * CMatrix().RotateY(45);
-		}
-	}
-	*/
-	CTransform::Update();	//行列更新
-	//mpEnemy = 0;
 
+		/*
+		//目標地点までのベクトルを求める
+		CVector vp = mPoint - mPosition;
+		float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
+		float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
+		float margin = 0.1f;
+		//左右方向へ回転
+		if (dx > margin)
+		{
+			mRotation.mY += 2.0f;
+		}
+		else if (dx < -margin)
+		{
+			mRotation.mY -= 2.0f;
+		}
+		//上下方向へ回転
+		if (dy > margin)
+		{
+			mRotation.mX -= 1.0f;
+		}
+		else if (dy < -margin)
+		{
+			mRotation.mX += 1.0f;
+		}
+
+		//移動する
+		//mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
+
+
+
+		//およそ3秒毎に目標地点を更新
+		int r = rand() % 180;	//rand()は整数の乱数を返す
+								//% 180 は180で割った余りを求める
+		if (r == 0)
+		{
+			if (mpEnemy)
+			{
+				mPoint = mpEnemy->mPosition;
+			}
+			else
+			{
+				mPoint = mPoint * CMatrix().RotateY(45);
+			}
+		}
+		*/
+		CTransform::Update();	//行列更新
+		//mpEnemy = 0;
+	}
 }
 //衝突処理
 //Collision(コライダ1, コライダ2)

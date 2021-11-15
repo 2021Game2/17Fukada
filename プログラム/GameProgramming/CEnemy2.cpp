@@ -60,53 +60,56 @@ CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector
 
 //更新処理
 void CEnemy2::Update() {
-
-	//HPが0以下の時　撃破
-	if (mHp <= 0)
+	if (CPlayer::mStart > 0)
 	{
-		mHp--;
-		//15フレーム毎にエフェクト
-		if (mHp % 15 == 0)
+
+
+		//HPが0以下の時　撃破
+		if (mHp <= 0)
 		{
-			//エフェクト生成
-			new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
-		}
-		//下降させる
-		mPosition.mY -= 0.03f;
-		CTransform::Update();	//行列更新
-		return;	//呼び元へ戻す
-	}
-
-
-	//左向き（X軸）のベクトルを求める
-	CVector vx = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
-	//上向き（Y軸）のベクトルを求める
-	CVector vy = CVector(0.0f, 1.0f, 0.0f) * mMatrixRotate;
-	//前方向（Z軸）のベクトルを求める
-	CVector vz = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
-
-	if (mFireCount > 0)
-	{
-		mFireCount--;
-	}
-	else
-	{
-		//プレイヤーのポインタが0以外の時
-		if (mpPlayer)
-		{
-			//プレイヤーまでのベクトルを求める
-			CVector vp = mpPlayer->mPosition - mPosition;
-			float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
-			float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
-			float dz = vp.Dot(vz);
-
-			//X軸のズレが2.0以下
-			if (-2.0f < dx && dx < 2.0f)
+			mHp--;
+			//15フレーム毎にエフェクト
+			if (mHp % 15 == 0)
 			{
-				//Y軸のズレが2.0以下
-				if (-2.0f < dy && dy < 2.0f)
+				//エフェクト生成
+				new CEffect(mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+			}
+			//下降させる
+			mPosition.mY -= 0.03f;
+			CTransform::Update();	//行列更新
+			return;	//呼び元へ戻す
+		}
+
+
+		//左向き（X軸）のベクトルを求める
+		CVector vx = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+		//上向き（Y軸）のベクトルを求める
+		CVector vy = CVector(0.0f, 1.0f, 0.0f) * mMatrixRotate;
+		//前方向（Z軸）のベクトルを求める
+		CVector vz = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+
+		if (mFireCount > 0)
+		{
+			mFireCount--;
+		}
+		else
+		{
+			//プレイヤーのポインタが0以外の時
+			if (mpPlayer)
+			{
+				//プレイヤーまでのベクトルを求める
+				CVector vp = mpPlayer->mPosition - mPosition;
+				float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
+				float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
+				float dz = vp.Dot(vz);
+
+				//X軸のズレが2.0以下
+				if (-2.0f < dx && dx < 2.0f)
 				{
-					if (dz < 20.0f && dz > -20.0f) {
+					//Y軸のズレが2.0以下
+					if (-2.0f < dy && dy < 2.0f)
+					{
+						if (dz < 20.0f && dz > -20.0f) {
 							mFireCount = FIRECOUNT;
 							//弾を発射します
 							CBullet* bullet = new CBullet();
@@ -114,79 +117,79 @@ void CEnemy2::Update() {
 							bullet->mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
 							bullet->mRotation = mRotation;
 							bullet->Update();
+						}
 					}
 				}
 			}
 		}
-	}
 
-	//目標地点までのベクトルを求める
-	CVector vp = mPoint - mPosition;
-	float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
-	float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
-	float dz = vp.Dot(vz);
-	float margin = 0.1f;
-	if (dz < 100.0f && dz > -100.0f) {	//プレイヤーとの距離が100未満の時の追尾はきつく
-		//左右方向へ回転
-		if (dx > margin)
-		{
-			mRotation.mY += 4.0f;
-		}
-		else if (dx < -margin)
-		{
-			mRotation.mY -= 4.0f;
-		}
-		//上下方向へ回転
-		if (dy > margin)
-		{
-			mRotation.mX -= 2.0f;
-		}
-		else if (dy < -margin)
-		{
-			mRotation.mX += 2.0f;
-		}
+		//目標地点までのベクトルを求める
+		CVector vp = mPoint - mPosition;
+		float dx = vp.Dot(vx);	//左ベクトルとの内積を求める
+		float dy = vp.Dot(vy);	//上ベクトルとの内積を求める
+		float dz = vp.Dot(vz);
+		float margin = 0.1f;
+		if (dz < 100.0f && dz > -100.0f) {	//プレイヤーとの距離が100未満の時の追尾はきつく
+			//左右方向へ回転
+			if (dx > margin)
+			{
+				mRotation.mY += 4.0f;
+			}
+			else if (dx < -margin)
+			{
+				mRotation.mY -= 4.0f;
+			}
+			//上下方向へ回転
+			if (dy > margin)
+			{
+				mRotation.mX -= 2.0f;
+			}
+			else if (dy < -margin)
+			{
+				mRotation.mX += 2.0f;
+			}
 
-		
-		if (dz < 10.0f && dz > -10.0f) {	//プレイヤーとの距離が5未満の時追尾は前進しない
-	   //移動する
-			mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY2) * mMatrixRotate;
+
+			if (dz < 10.0f && dz > -10.0f) {	//プレイヤーとの距離が10未満の時追尾は前進しない
+		   //移動する
+				mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY2) * mMatrixRotate;
+			}
+			else {	//プレイヤーとの距離が5以上の時は前進
+				//移動する
+				mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
+			}
 		}
-		else {	//プレイヤーとの距離が5以上の時は前進
+		else {	//プレイヤーとの距離が100以上の時追尾は緩やかに
+			//左右方向へ回転
+			if (dx > margin)
+			{
+				mRotation.mY += 1.0f;
+			}
+			else if (dx < -margin)
+			{
+				mRotation.mY -= 1.0f;
+			}
+			//上下方向へ回転
+			if (dy > margin)
+			{
+				mRotation.mX -= 1.0f;
+			}
+			else if (dy < -margin)
+			{
+				mRotation.mX += 1.0f;
+			}
+
 			//移動する
 			mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
 		}
-	}
-	else  {	//プレイヤーとの距離が100以上の時追尾は緩やかに
-		//左右方向へ回転
-		if (dx > margin)
-		{
-			mRotation.mY += 1.0f;
-		}
-		else if (dx < -margin)
-		{
-			mRotation.mY -= 1.0f;
-		}
-		//上下方向へ回転
-		if (dy > margin)
-		{
-			mRotation.mX -= 1.0f;
-		}
-		else if (dy < -margin)
-		{
-			mRotation.mX += 1.0f;
-		}
 
-		//移動する
-		mPosition = mPosition + CVector(0.0f, 0.0f, VELOCITY) * mMatrixRotate;
-	}
 
-	
 
-	CTransform::Update();	//行列更新
+		CTransform::Update();	//行列更新
 
-		//目標地点を更新
+			//目標地点を更新
 		int r = rand() % 10;	//rand()は整数の乱数を返す
-						
+
 		if (r == 0)
 		{
 			if (mpPlayer)
@@ -198,10 +201,11 @@ void CEnemy2::Update() {
 				mPoint = mPoint * CMatrix().RotateY(45);
 			}
 		}
-	
 
-	
-	mpPlayer = 0;
+
+
+		mpPlayer = 0;
+	}
 
 }
 //衝突処理
@@ -228,9 +232,21 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 					mpPlayer = o->mpParent;
 				}
 			}
+			//相手がエネミーの時
+			if (o->mpParent->mTag == EENEMY)
+			{
+				//衝突している時
+				if (CCollider::Collision(m, o))
+				{
+					//エネミーーのポインタ設定
+					mpEnemy = o->mpParent;
+				}
+			}
 		}
 		return;
 	}
+
+	
 
 	switch (o->mType)
 	{

@@ -21,8 +21,10 @@ CModel mModelC;
 CPlayer *CPlayer::spThis = 0;
 
 #define FIRECOUNT 15	//発射間隔
-
+float CPlayer::mHp = 30;
+float CPlayer::mStart = 0;
 CPlayer::CPlayer()
+
 	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
 	, mLine2(this, &mMatrix, CVector(0.0f, 5.0f, -8.0f), CVector(0.0f, -3.0f, -8.0f))
 	, mLine3(this, &mMatrix, CVector(9.0f, 0.0f, -8.0f), CVector(-9.0f, 0.0f, -8.0f))
@@ -82,6 +84,11 @@ void CPlayer::Update() {
 		mPosition = CVector(0.0f, 0.0f, -1.0f) * mMatrix;
 	}
 
+	//Hキー入力で敵が移動開始
+	if (CKey::Push('H')) {
+		mStart++;
+	}
+
 	if (mFireCount > 0)
 	{
 		mFireCount--;
@@ -98,7 +105,7 @@ void CPlayer::Update() {
 		mZandan--;
 //		TaskManager.Add(bullet);
 	}
-
+	//Rキーでリロード
 	if (CKey::Push('R')) {
 		mFireCount = 300;
 		mZandan = 30;
@@ -119,6 +126,7 @@ void CPlayer::Update() {
 		//mModelC.Load(OBJ, MTL);
 		new CFriendly(CVector(0.0f, 0.0f, 30.0f) * mMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 	}
+
 
 
 	//CTransformの更新
@@ -152,6 +160,8 @@ void CPlayer::Collision(CCollider *m, CCollider *o) {
 			{
 				//エフェクト生成
 				new CEffect(o->mpParent->mPosition, 1.0f, 1.0f, "exp.tga", 4, 4, 2);
+				mHp--;
+			
 			}
 		}
 		break;
@@ -185,8 +195,12 @@ void CPlayer::Render()
 	char buf[256];
 
 	sprintf(buf, "BULLET:%2.0f", mZandan);
+	
 	//文字列の描画
 	mText.DrawString(buf, 100, 30, 8, 16);
+
+	sprintf(buf, "HP:%2.0f", mHp);
+	mText.DrawString(buf, 100, 0, 8, 16);
 	/*
 	//Y座標の表示
 	//文字列の設定
