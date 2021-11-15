@@ -21,8 +21,9 @@ CModel mModelC;
 CPlayer *CPlayer::spThis = 0;
 
 #define FIRECOUNT 15	//発射間隔
-float CPlayer::mHp = 30;
-float CPlayer::mStart = 0;
+float CPlayer::mHp = 30;	//プレイヤーのHP
+float CPlayer::mStart = 0;	//敵味方行動開始のフラグ管理
+float CPlayer::mFriendly = 8;	//味方の設置上限
 CPlayer::CPlayer()
 
 	: mLine(this, &mMatrix, CVector(0.0f, 0.0f, -14.0f), CVector(0.0f, 0.0f, 17.0f))
@@ -32,6 +33,7 @@ CPlayer::CPlayer()
 	, mFireCount(0)
 	, mZandan(BULLET)	//残弾
 	, mFly(0)
+	, mTime(0)	//ディレイ用
 {
 	mTag = EPLAYER;	//タグの設定
 	spThis = this;
@@ -123,10 +125,18 @@ void CPlayer::Update() {
 	}
 
 	if (CKey::Push('Z')) {
-		//mModelC.Load(OBJ, MTL);
-		new CFriendly(CVector(0.0f, 0.0f, 30.0f) * mMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+		if (mTime <= 0)
+		{
+			if (mFriendly > 0)
+			{
+				//mModelC.Load(OBJ, MTL);
+				new CFriendly(CVector(0.0f, 0.0f, 30.0f) * mMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+				mFriendly--;
+				mTime = 60;
+			}
+		}
 	}
-
+	mTime--;
 
 
 	//CTransformの更新
@@ -201,6 +211,9 @@ void CPlayer::Render()
 
 	sprintf(buf, "HP:%2.0f", mHp);
 	mText.DrawString(buf, 100, 0, 8, 16);
+
+	sprintf(buf, "FRIENDLY:%2.0f", mFriendly);
+	mText.DrawString(buf, 100, -30, 8, 16);
 	/*
 	//Y座標の表示
 	//文字列の設定

@@ -12,7 +12,7 @@
 
 CModel CFriendly::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 5	//発射間隔
+#define FIRECOUNT 10	//発射間隔
 
 
 CFriendly::CFriendly()
@@ -22,7 +22,8 @@ CFriendly::CFriendly()
 	, mHp(HP)
 	, mFireCount(0)
 {
-	mTag = EFRIENDLY;
+	//mTag = EFRIENDLY;
+	mTag = EPLAYER;
 	mColSearch.mTag = CCollider::ESEARCH;	//タグ設定
 
 	//モデルが無いときは読み込む

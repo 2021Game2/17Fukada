@@ -14,7 +14,7 @@
 
 CModel CEnemy2::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 15	//発射間隔
+#define FIRECOUNT 10	//発射間隔
 
 int CEnemy2::sCount = 0;	//インスタンス数
 CEnemy2::CEnemy2()
@@ -233,7 +233,7 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 				}
 			}
 			//相手がエネミーの時
-			if (o->mpParent->mTag == EENEMY)
+		/*if (o->mpParent->mTag == EENEMY)
 			{
 				//衝突している時
 				if (CCollider::Collision(m, o))
@@ -241,7 +241,7 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 					//エネミーーのポインタ設定
 					mpEnemy = o->mpParent;
 				}
-			}
+			}*/
 		}
 		return;
 	}
