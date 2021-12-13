@@ -20,6 +20,8 @@
 //
 #include "CUtil.h"
 
+#include"CBlock.h"
+
 void CSceneGame::Init() {
 	mText.LoadTexture("FontWhite.tga",1,64);
 
@@ -68,7 +70,10 @@ void CSceneGame::Init() {
 	new CEnemy2(CVector(-15.0f, 1.0f, -40.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy2(CVector(15.0f, 1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-
+	new CBlock(CVector(20.0f,-1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
+	new CBlock(CVector(20.0f, -1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
+	new CBlock(CVector(0.0f, -1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
+	new CBlock(CVector(0.0f, -1.0f,-50.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
 	//ビルボードの生成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 	//背景モデルから三角コライダを生成

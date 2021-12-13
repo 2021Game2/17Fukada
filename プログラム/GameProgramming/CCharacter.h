@@ -23,6 +23,7 @@ public:
 		EBULLETPLAYER,	//プレイヤー弾
 		EBULLETENEMY,	//敵弾
 		EFRIENDLY,	//固定砲台
+		EBLOCK,
 	};
 	ETag mTag;
 	CModel *mpModel; //モデルのポインタ
