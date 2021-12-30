@@ -70,10 +70,16 @@ void CSceneGame::Init() {
 	new CEnemy2(CVector(-15.0f, 1.0f, -40.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 	new CEnemy2(CVector(15.0f, 1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CBlock(CVector(20.0f,-1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
-	new CBlock(CVector(20.0f, -1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
-	new CBlock(CVector(0.0f, -1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
-	new CBlock(CVector(0.0f, -1.0f,-50.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
+	new CBlock(CVector(-20.0f,-1.0f, -60.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
+	new CBlock(CVector(30.0f, -1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
+	new CBlock(CVector(0.0f, -1.0f, -1.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
+	new CBlock(CVector(-45.0f, -1.0f,0.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
+
+	new CBlock(CVector(-30.0f, -1.0f, -20.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
+	new CBlock(CVector(80.0f, -1.0f, -60.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
+	new CBlock(CVector(15.0f, -1.0f, -10.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
+	new CBlock(CVector(-2.0f, -1.0f, -30.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
+	new CBlock(CVector(10.0f, -1.0f, -45.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 5.0f, 3.0f));
 	//ビルボードの生成
 	new CBillBoard(CVector(-6.0f, 3.0f, -10.0f), 1.0f, 1.0f);
 	//背景モデルから三角コライダを生成
@@ -134,11 +140,12 @@ void CSceneGame::Update() {
 	}
 	*/
 	//	e = CVector(-2.0f, 10.0f, -30.0f) * mPlayer.mMatrix;
-	e = CVector(-2.0f, 50.0f, -130.0f) * CMatrix().RotateY(Camera.mRotation.mY) * mPlayer.mMatrix;
+	e = CVector(-2.0f, 200.0f, -130.0f) * CMatrix().RotateY(Camera.mRotation.mY) * mPlayer.mMatrix;
+	//元々yは50
 	//注視点を求める
 	c = mPlayer.mPosition;
 	//上方向を求める
-	u = CVector(0.0f, 1.0f, 0.0f) * mPlayer.mMatrixRotate;
+	u = CVector(0.0f, 10.0f, 0.0f) * mPlayer.mMatrixRotate;
 	//カメラの設定
 	//gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	//カメラクラスの設定
@@ -174,7 +181,7 @@ void CSceneGame::Update() {
 		CUtil::End2D();
 	}
 	//プレイヤーのHP0でゲームオーバー
-	if (CPlayer::mHp == 0)
+	if (CPlayer::mHp <= 0)
 	{
 		//2Dの描画開始
 		CUtil::Start2D(-400, 400, -300, 300);

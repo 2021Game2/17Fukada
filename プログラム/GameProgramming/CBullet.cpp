@@ -1,10 +1,11 @@
 #include "CBullet.h"
 #include "CCollisionManager.h"
-
+#include "CTaskManager.h"
 CBullet::CBullet()
 : mLife(50)
 , mCollider(this, &mMatrix, CVector(0.0f, 0.0f, 0.0f), 0.1f)
-{}
+{
+}
 
 //幅と奥行きの設定
 //Set(幅, 奥行)
@@ -15,6 +16,7 @@ void CBullet::Set(float w, float d) {
 	mT.SetVertex(CVector(w, 0.0f, 0.0f), CVector(0.0f, 0.0f, -d), CVector(-w, 0.0f, 0.0f));
 	//三角形の法線設定
 	mT.SetNormal(CVector(0.0f, 1.0f, 0.0f));
+
 }
 
 //更新
@@ -43,37 +45,50 @@ void CBullet::Render() {
 
 //衝突処理
 //Collision(コライダ1, コライダ2)
-void CBullet::Collision(CCollider *m, CCollider *o) {
+void CBullet::Collision(CCollider* m, CCollider* o) {
 	//相手がサーチの時は戻る
 	if (o->mTag == CCollider::ESEARCH)
 	{
 		return;
-	}
 
-	//コライダのmとyが衝突しているか判定
-	if (CCollider::Collision(m, o)) {
-		//衝突している時は無効にする
-		mEnabled = false;
+	}
+	switch (o->mType)
+	{
+	case CCollider::ETRIANGLE:	//三角コライダの時
+		CVector adjust; //調整値
+		//三角コライダと球コライダの衝突判定
+		if (CCollider::CollisionTriangleSphere(o, m, &adjust))
+		{	//衝突しない位置まで戻す
+			mEnabled = false;
+		}
+		break;
 	}
 
 	return;
 
-	if (m->mType == CCollider::ESPHERE
-		&& o->mType == CCollider::ESPHERE)
-	{
-		switch (o->mTag)
+		if (m->mType == CCollider::ESPHERE
+			&& o->mType == CCollider::ESPHERE)
 		{
-		case CCollider::ESEARCH:
-			break;
-		default:
-			//コライダのmとyが衝突しているか判定
-			if (CCollider::Collision(m, o)) {
-				//衝突している時は無効にする
-				mEnabled = false;
+			CVector adjust; //調整値
+			switch (o->mTag)
+			{
+			case CCollider::ESEARCH:
+				break;
+			default:
+				//コライダのmとyが衝突しているか判定
+				if (CCollider::Collision(m, o)) {
+					//衝突している時は無効にする
+					mEnabled = false;
+				}
+
+				break;
 			}
 		}
+
 	}
-}
+
+
+
 void CBullet::TaskCollision()
 {
 	mCollider.ChangePriority();

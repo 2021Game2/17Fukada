@@ -30,6 +30,7 @@ public:
 	//Collision(コライダ1, コライダ2)
 	void Collision(CCollider *m, CCollider *o);
 	void TaskCollision();
+	static CModel mModel;
 };
 
 #endif

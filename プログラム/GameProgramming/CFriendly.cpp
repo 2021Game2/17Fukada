@@ -7,12 +7,12 @@
 #define OBJ "f14.obj"	//モデルのファイル
 #define MTL "f14.mtl"	//モデルのマテリアルファイル
 
-#define HP 3	//耐久値
+#define HP 10	//耐久値
 #define VELOCITY 0.11f	//速度
 
 CModel CFriendly::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 10	//発射間隔
+#define FIRECOUNT 20	//発射間隔
 
 
 CFriendly::CFriendly()
@@ -56,7 +56,7 @@ CFriendly::CFriendly(const CVector& position, const CVector& rotation, const CVe
 
 //更新処理
 void CFriendly::Update() {
-	if (CPlayer::mStart > 0)
+	if (CPlayer::mStart > 0 && CPlayer::mHp > 0)
 	{
 		//HPが0以下の時　撃破
 		if (mHp <= 0)

@@ -14,7 +14,7 @@
 
 CModel CEnemy2::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 10	//発射間隔
+#define FIRECOUNT 20	//発射間隔
 
 int CEnemy2::sCount = 0;	//インスタンス数
 CEnemy2::CEnemy2()
@@ -60,7 +60,7 @@ CEnemy2::CEnemy2(const CVector& position, const CVector& rotation, const CVector
 
 //更新処理
 void CEnemy2::Update() {
-	if (CPlayer::mStart > 0)
+	if (CPlayer::mStart > 0&&CPlayer::mHp>0)
 	{
 
 
@@ -273,7 +273,7 @@ void CEnemy2::Collision(CCollider *m, CCollider *o) {
 		//三角コライダと球コライダの衝突判定
 		if (CCollider::CollisionTriangleSphere(o, m, &adjust))
 		{	//衝突しない位置まで戻す
-			mPosition = mPosition + adjust;
+ 			mPosition = mPosition + adjust;
 		}
 		break;
 	}
