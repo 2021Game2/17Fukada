@@ -61,14 +61,14 @@ void CSceneGame::Init() {
 //	new CEnemy2(CVector(-15.0f, 15.0f, -90.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 //	new CEnemy2(CVector(15.0f, 15.0f, -150.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CEnemy2(CVector(-10.0f, 1.0f, -80.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy2(CVector(10.0f, 1.0f, -80.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(-10.0f, 0.0f, -80.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(10.0f, 0.0f, -80.0f)*mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CEnemy2(CVector(-35.0f, 1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy2(CVector(35.0f, 1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(-35.0f, 0.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(35.0f, 0.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
-	new CEnemy2(CVector(-15.0f, 1.0f, -40.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
-	new CEnemy2(CVector(15.0f, 1.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(-15.0f, 0.0f, -40.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
+	new CEnemy2(CVector(15.0f, 0.0f, -100.0f) * mBackGroundMatrix, CVector(), CVector(0.1f, 0.1f, 0.1f));
 
 	new CBlock(CVector(-20.0f,-1.0f, -60.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));
 	new CBlock(CVector(30.0f, -1.0f, -50.0f) * mBackGroundMatrix, CVector(), CVector(4.0f, 10.0f, 3.0f));

@@ -21,7 +21,7 @@ CModel mModelC;
 CPlayer *CPlayer::spThis = 0;
 
 #define FIRECOUNT 15	//発射間隔
-float CPlayer::mHp = 30;	//プレイヤーのHP
+float CPlayer::mHp = 20;	//プレイヤーのHP
 float CPlayer::mStart = 0;	//敵味方行動開始のフラグ管理
 float CPlayer::mFriendly = 8;	//味方の設置上限
 CPlayer::CPlayer()
@@ -59,7 +59,8 @@ void CPlayer::Update() {
 			//Z軸方向に1進んだ値を回転移動させる
 			mPosition = CVector(0.0f, 0.0f, 3.0f) * mMatrix;
 		}
-		//Sキー入力で上向き
+		/*
+		//上矢印キー入力で下向き
 		if (CKey::Push(VK_UP)) {
 			//X軸の回転値を減算
 			mRotation.mX -= 1;
@@ -69,7 +70,7 @@ void CPlayer::Update() {
 			//X軸の回転値を加算
 			mRotation.mX += 1;
 		}
-
+		*/
 		if (CKey::Push('D')) {
 			//X軸方向に1進んだ値を回転移動させる
 			mPosition = CVector(-2.0f, 0.0f, 0.0f) * mMatrix;
@@ -116,11 +117,11 @@ void CPlayer::Update() {
 		if (CKey::Push('G')) {
 			//軸方向に移動させる
 			mPosition = CVector(0.0f, 2.0f, 0.0f) * mMatrix;
-			mFly = mFly + 2;
+			mFly = mFly + 1;
 		}
 		else if (mFly > 0)
 		{
-			mPosition = CVector(0.0f, -1.0f, 0.0f) * mMatrix;
+			mPosition = CVector(0.0f, -2.0f, 0.0f) * mMatrix;
 			mFly--;
 		}
 

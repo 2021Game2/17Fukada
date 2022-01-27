@@ -12,7 +12,7 @@
 
 CModel CFriendly::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 20	//発射間隔
+#define FIRECOUNT 15	//発射間隔
 
 
 CFriendly::CFriendly()

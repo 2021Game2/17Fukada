@@ -14,7 +14,7 @@
 
 CModel CEnemy2::mModel;	//モデルデータ作成
 
-#define FIRECOUNT 20	//発射間隔
+#define FIRECOUNT 15	//発射間隔
 
 int CEnemy2::sCount = 0;	//インスタンス数
 CEnemy2::CEnemy2()
